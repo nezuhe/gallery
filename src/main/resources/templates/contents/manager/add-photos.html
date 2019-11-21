@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout.html}">
+
+<body>
+    <div layout:fragment="content">
+
+        <br/>
+        <div class="border rounded">
+
+            <div th:if="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).SUCCESS_UPLOAD_MESSAGE}__} != null"
+                 class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <p th:text="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).SUCCESS_UPLOAD_MESSAGE}__}"></p>
+            </div>
+            <div th:if="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).ERROR_UPLOAD_MESSAGE}__} != null"
+                 class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <p th:text="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).ERROR_UPLOAD_MESSAGE}__}"></p>
+            </div>
+
+            <br/>
+            <form th:action="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).MANAGER_ADD_PHOTOS}__}"
+                  method="post" enctype="multipart/form-data" th:object="${addPhotosToGalleryForm}">
+                <div class="form-row">
+                    <div class="col-md-1"></div>
+                    <div class="form-group col-md-5">
+                        <input type="file" id="files" multiple th:field="*{multipartFiles}"/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <select id="inputState" class="form-control" th:field="*{galleryId}" required>
+                            <option th:value="2">1. Galeria</option>
+                            <option th:value="3">2. Goście</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <input type="submit" class="btn btn-primary" id="submit-button" value="Upload"/>
+                    </div>
+                </div>
+            </form>
+
+            <div>
+                <p style="text-align: center; font-weight: bold; color: #a92222" id="file-size"></p>
+                <p style="text-align: center; font-weight: bold" id="upload-size"></p>
+                <p style="text-align: center; font-weight: bold; color: #a92222" id="oversize"></p>
+            </div>
+
+        </div>
+
+        <script>
+            $('#files').bind('change', function () {
+                $("#submit-button").attr("disabled", false);
+                document.getElementById("file-size").innerText = "";
+
+                var totalSize = 0;
+                for (var i = 0; i < this.files.length; i++) {
+                    var fileSize = this.files[i].size;
+                    totalSize = totalSize + fileSize;
+
+                    if (fileSize > 10 * 1024 * 1024) {
+                        document.getElementById("file-size").innerText = "Jeden z plików jest zbyt duży. Maksymalny rozmiar to 10 MB.";
+                        $("#submit-button").attr("disabled", true);
+                    }
+                }
+
+                document.getElementById("upload-size").innerText = "Łączna wielkość wybranych plików: " + Math.round(totalSize/1024/1024).toString() + " MB";
+                if (totalSize > 100 * 1024 * 1024) {
+                    document.getElementById("oversize").innerText = "Łączna wielkość wybranych plików przekrasza limit 100 MB";
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

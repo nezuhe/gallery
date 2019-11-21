@@ -1,0 +1,48 @@
+body, html {
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    background: url("https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260") no-repeat center fixed;
+    background-size: cover;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Add styles to the form container */
+.container {
+    position: absolute;
+    right: 150px;
+    max-width: 300px;
+    padding: 16px;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: thin;
+    background: #f1f1f1;
+    opacity: 0.5;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+/* Set a style for the submit button */
+.btn {
+    background-color: rgb(68, 113, 240);
+    color: #ffffff;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.7;
+}
+
+.btn:hover {
+    opacity: 1;
+}

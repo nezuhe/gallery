@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout.html}">
+
+<body>
+    <div layout:fragment="content">
+        <div th:if="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).SUCCESS_DELETE_UPLOAD_MESSAGE}__} != null"
+             class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p th:text="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).SUCCESS_DELETE_UPLOAD_MESSAGE}__}"></p>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Imię</th>
+                    <th scope="col">Nazwisko</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody th:each="upload : ${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).UPLOADS}__}">
+                <tr>
+                    <th scope="row" th:text="${upload.getUploadId()}"></th>
+                    <td th:text="${upload.getName()}"></td>
+                    <td th:text="${upload.getSurname()}"></td>
+                    <td th:text="${upload.getStatus()}"></td>
+                    <td><a class="btn btn-outline-primary" role="button"
+                           th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).MANAGER_UPLOADS_DETAILS + upload.getUploadId()}__}"
+                           th:text="#{button.title.details}"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

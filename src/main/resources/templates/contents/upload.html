@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout.html}">
+
+<body>
+    <div layout:fragment="content">
+
+        <div th:if="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).SUCCESS_UPLOAD_MESSAGE}__} != null"
+             class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p th:text="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).SUCCESS_UPLOAD_MESSAGE}__}"></p>
+        </div>
+        <div th:if="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).ERROR_UPLOAD_MESSAGE}__} != null"
+             class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p th:text="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).ERROR_UPLOAD_MESSAGE}__}"></p>
+        </div><br/>
+
+        <form th:action="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).UPLOAD}__}"
+              class="dropzone" method="post" enctype="multipart/form-data" id="dropzone">
+            <div class="fallback">
+                <input type="file" name="file" multiple/>
+                <input type="submit" value="Upload"/>
+            </div>
+        </form><br/>
+
+        <form th:action="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).UPLOAD_SAVE}__}"
+              th:object="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).UPLOADER_FORM}__}"
+              method="post" id="uploader">
+            <div class="row">
+                <div class="form-group row col-sm-4">
+                    <label for="name" class="col-sm-4 col-form-label">Imię</label>
+                    <input type="text" id="name" class="form-control col-sm-8" required th:field="*{name}">
+                </div>
+                <div class="form-group row col-sm-4">
+                    <label for="surname" class="col-sm-4 col-form-label">Nazwisko</label>
+                    <input type="text" id="surname" class="form-control col-sm-8" th:field="*{surname}">
+                </div>
+                <div class="form-group row col-sm-4">
+                    <label for="email" class="col-sm-4 col-form-label">e-mail</label>
+                    <input type="email" id="email" class="form-control col-sm-8" th:field="*{email}">
+                </div>
+            </div>
+            <div style="text-align: center">
+                <button class="btn btn-outline-primary" type="submit">Zapisz</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout.html}">
+
+<body>
+    <div layout:fragment="content">
+
+        <br/>
+        <div style="text-align:center;">
+            <button class="btn btn-primary justify-content-center"
+                    th:onclick="|saveChanges()|" th:text="#{button.title.saveChanges}"></button>
+        </div>
+        <br/>
+
+        <ul class="row justify-content-center" style="list-style-type: none" id="sortable">
+            <li class="col-lg-3 col-md-4 col-xs-6 ui-state-default ui-sortable-handle border rounded cell-padding"
+                style="text-align:center;"
+                th:each="photo : ${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).GALLERY}__}">
+                <img class="img-thumbnail gallery-image"
+                     th:id="${photo.getId()}" th:src="@{${photo.getPhotoUrl()}}">
+                <button class="btn btn-secondary button-padding-top-bottom"
+                        th:onclick="|selectToRemove('${photo.getId()}')|">
+                    <i class="fa fa-trash"> Usuń zdjęcie</i>
+                </button>
+            </li>
+        </ul>
+
+        <script>
+
+            var photosToRemoveList = [];
+            var photosNewSequenceList = [];
+
+            function selectToRemove(photoId) {
+                $(function() {
+                    if (document.getElementById(photoId).classList.contains('selected-to-remove')) {
+                        document.getElementById(photoId).classList.remove('selected-to-remove');
+                    } else {
+                        document.getElementById(photoId).classList.add('selected-to-remove');
+                    }
+                });
+            }
+
+            function getPhotosToRemoveList() {
+                var photosInGallery = document.getElementsByClassName('selected-to-remove');
+                return getIdsFromArray(photosInGallery);
+            }
+
+            function getPhotosNewSequence() {
+                var imagesList = document.querySelectorAll('.gallery-image:not(.selected-to-remove)');
+                return getIdsFromArray(imagesList);
+            }
+
+            function getIdsFromArray(imagesList) {
+                var imagesListLength = imagesList.length;
+                var idStore = [];
+                for (var i = 0; i < imagesListLength; i++) {
+                    idStore.push(imagesList[i].id);
+                }
+                return idStore;
+            }
+
+            function saveChanges() {
+                if (confirm("Chcesz zapisać zmiany?")) {
+                    photosToRemoveList = getPhotosToRemoveList();
+                    photosNewSequenceList = getPhotosNewSequence();
+                    updateGalleryAfterChanges();
+                }
+            }
+
+            function updateGalleryAfterChanges() {
+                $.ajax({
+                    url: "/manager-save/",
+                    type: "POST",
+                    data: JSON.stringify({
+                        photosToRemoveList: photosToRemoveList,
+                        photosNewSequenceList: photosNewSequenceList
+                    }),
+                    contentType: "application/json",
+                    complete: function() {
+                        location.reload();
+                    }
+                });
+            }
+
+            $(function() {
+                $("#sortable").sortable();
+                $("#sortable").disableSelection();
+            });
+        </script>
+    </div>
+</body>
+</html>

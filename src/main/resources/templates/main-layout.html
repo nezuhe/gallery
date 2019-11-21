@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}"></title>
+
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{https://use.fontawesome.com/releases/v5.0.13/css/all.css}"
+          integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet"
+          th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.css}">
+    <link rel="stylesheet"
+          th:href="@{dist/css/lightbox.css}">
+    <link rel="stylesheet"
+          th:href="@{dist/css/dropzone.css}">
+    <link rel="stylesheet"
+          th:href="@{dist/css/main.css}">
+
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <script th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{dist/js/lightbox.js}"></script>
+    <script th:src="@{dist/js/dropzone.js}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div th:replace="~{fragments/nav-bar :: nav-bar}"></div>
+
+        <div layout:fragment="content"></div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</body>
+</html>

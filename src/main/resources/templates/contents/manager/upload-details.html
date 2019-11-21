@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout.html}">
+
+<body>
+    <div layout:fragment="content">
+        <table class="table">
+            <thead>
+                <th scope="col">ID</th>
+                <th scope="col">Imię</th>
+                <th scope="col">Nazwisko</th>
+                <th scope="col">e-mail</th>
+                <th scope="col">Data</th>
+                <th scope="col">Status</th>
+                <th scope="col">Ilość zdjęć</th>
+            </thead>
+            <tbody>
+                <tr th:field="${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).UPLOAD_DETAILS}__}">
+                    <td th:text="*{uploadDetails.getUploadId()}"></td>
+                    <td th:text="*{uploadDetails.getName()}"></td>
+                    <td th:text="*{uploadDetails.getSurname()}"></td>
+                    <td th:text="*{uploadDetails.getEmail()}"></td>
+                    <td th:text="*{uploadDetails.getUploadDate()}"></td>
+                    <td th:text="*{uploadDetails.getStatus()}"></td>
+                    <td th:text="*{uploadDetails.getPhotosQuantity()}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="btn-toolbar text-center" role="toolbar">
+            <a class="btn btn-outline-primary button-padding-sides" data-toggle="collapse" href="#collapseGallery"
+               role="button" aria-expanded="false" aria-controls="collapseGallery"
+               th:text="#{button.title.showImages}"></a>
+
+            <div class="dropdown button-padding-sides">
+                <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownChangeStatusMenu"
+                   th:text="#{button.title.changeStatus}"></a>
+                <div class="dropdown-menu" aria-labelledby="dropdownChangeStatusMenu">
+                    <a class="dropdown-item" href="#"
+                       th:onclick="|changeUploadStatus(${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).UPLOAD_ID}__}, 1)|"
+                       th:text="#{button.changeStatus.new}"></a>
+                    <a class="dropdown-item" href="#"
+                       th:onclick="|changeUploadStatus(${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).UPLOAD_ID}__}, 2)|"
+                       th:text="#{button.changeStatus.read}"></a>
+                    <a class="dropdown-item" href="#"
+                       th:onclick="|changeUploadStatus(${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).UPLOAD_ID}__}, 3)|"
+                       th:text="#{button.changeStatus.downloaded}"></a>
+                </div>
+            </div>
+
+            <a class="btn btn-secondary button-padding-sides" href="#" role="button"
+               th:onclick="|deleteUpload(${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).UPLOAD_ID}__})|"
+               th:text="#{button.title.deleteUpload}"></a>
+        </div><br/>
+
+        <div class="collapse" id="collapseGallery">
+            <div class="card card-body">
+                <div class="row justify-content-center">
+
+                <div class="col-lg-4 col-md-4 col-xs-6 thumb"
+                     th:each="file : ${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).UPLOADED_FILES}__}">
+                    <div>
+                        <a th:href="${file.getPhotoUrl()}" th:id="${file.getFileId()}"
+                           data-lightbox="gallery" class="col-padding photo">
+                        <img th:src="@{${file.getPhotoUrl()}}" class="img-thumbnail cursor">
+                    </a>
+                        <a class="btn btn-outline-primary btn-sm button-center" download
+                           th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).MANAGER_DOWNLOAD + file.getFileId()}__}"
+                           th:text="#{button.title.download}"></a>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+
+        <br/>
+        <div style="text-align: center">
+            <a th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).MANAGER_UPLOADS}__}"
+               class="btn btn-primary" role="button"
+               th:text="#{button.title.back}"></a>
+        </div>
+
+        <script>
+            function deleteUpload(uploadId) {
+                if (confirm("Chcesz usunąć wpis?")) {
+                    $.ajax({
+                        url: "/manager-delete-upload-" + uploadId,
+                        type: "POST"
+                    });
+                }
+            }
+
+            function changeUploadStatus(uploadId, statusId) {
+                $.ajax({
+                    url: "manager-uploads-change-" + uploadId + "-" + statusId,
+                    type: "POST",
+                    complete: function() {
+                        location.reload();
+                    }
+                });
+            }
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(68, 113, 240)">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item" th:class="${homeClass}">
+                    <a class="nav-link"
+                       th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).HOME}__}"
+                       th:text="#{title.home}"></a>
+                </li>
+                <li class="nav-item" th:class="${mainGalleryClass}">
+                    <a class="nav-link"
+                       th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).MAIN_GALLERY}__}"
+                       th:text="#{title.mainGallery}"></a>
+                </li>
+                <li class="nav-item" th:class="${guestsGalleryClass}">
+                    <a class="nav-link"
+                       th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).GUESTS_GALLERY}__}"
+                       th:text="#{title.guestsGallery}"></a>
+                </li>
+                <li class="nav-item" th:class="${uploadFilesClass}">
+                    <a class="nav-link"
+                       th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).UPLOAD}__}"
+                       th:text="#{title.upload}"></a>
+                </li>
+
+                <li th:if="${isAdmin}">
+                    <div class="dropdown">
+                        <div  th:class="${managerClass}">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                               th:text="#{title.manager}"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item"
+                                   th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).MANAGER_ADD_PHOTOS}__}"
+                                   th:text="#{title.manager.addPhotos}"></a>
+                                <a class="dropdown-item"
+                                   th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).MANAGER_MAIN_GALLERY}__}"
+                                   th:text="#{title.manager.mainGallery}"></a>
+                                <a class="dropdown-item"
+                                   th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).MANAGER_GUESTS_GALLERY}__}"
+                                   th:text="#{title.manager.guestsGallery}"></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item"
+                                   th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).MANAGER_UPLOADS}__}"
+                                   th:text="#{title.manager.uploads}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{__${T(pl.piotrchowaniec.gallery.models.utils.Mappings).LOGOUT}__}"
+                       th:text="#{title.logout}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

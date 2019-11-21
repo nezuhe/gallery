@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.thymeleaf.org/"
+      layout:decorate="~{main-layout.html}">
+
+<body>
+    <div layout:fragment="content">
+        <br/>
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-4 col-xs-6 thumb"
+                 th:each="photo : ${__${T(pl.piotrchowaniec.gallery.models.utils.AttributeNames).GALLERY}__}">
+                <a data-lightbox="gallery" class="col-padding photo"
+                   th:href="@{${photo.getPhotoUrl()}}" th:id="${photo.getId()}">
+                    <img th:src="@{${photo.getPhotoUrl()}}" class="img-thumbnail cursor">
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
